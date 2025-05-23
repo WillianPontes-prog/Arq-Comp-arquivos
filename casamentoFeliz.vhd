@@ -108,23 +108,9 @@ begin
     acc_data_in <= unsigned(alu_result);
     alu_op <= op;
 
-    process(choose_banco_in, data_in, alu_result)
-    begin
-        if choose_banco_in = '1' then
-            banco_data_in <= data_in;
-        else
-            banco_data_in <= unsigned(alu_result);
-        end if;
-    end process;
+    banco_data_in <= data_in when choose_banco_in = '1' else unsigned(acc_data_out);
 
-    process(choose_accumulator, acc_data_in, imm_data)
-    begin
-        if choose_accumulator = '1' then
-            alu_b <= std_logic_vector(acc_data_in);
-        else
-            alu_b <= std_logic_vector(imm_data);
-        end if;
-    end process;
+    alu_b <= std_logic_vector(imm_data) when choose_accumulator = '0' else std_logic_vector(acc_data_in);
 
 
 end architecture casamentoFeliz_a;

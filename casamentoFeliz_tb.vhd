@@ -25,7 +25,6 @@ architecture tb of casamentoFeliz_tb is
         );
     end component;
 
-    -- Sinais para estímulo
     signal clk                 : std_logic := '0';
     signal wr_en               : std_logic := '0';
     signal reset               : std_logic := '0';
@@ -70,7 +69,6 @@ begin
         end loop;
     end process;
 
-    -- Stimulus process
     stim_proc: process
     begin
         -- Reset
@@ -99,7 +97,6 @@ begin
 
         
         reg_choose <= "000"; -- Seleciona reg0 para a entrada da ALU
-        choose_banco_in <= '0'; -- Usa saída da ALU como entrada do banco
         choose_accumulator <= '0'; -- alu_b recebe imm_data
         imm_data <= to_unsigned(10, 16); 
         op <= "00"; -- Soma
@@ -107,8 +104,12 @@ begin
         wait for clk_period;
         acc_wr_en <= '0';
         wait for clk_period;
-
-
+        reg_choose <= "000"; -- Seleciona reg0 
+        choose_banco_in <= '0'; -- Usa saída do acumulador como entrada do banco
+        wr_en <= '1'; -- Escreve no banco
+        wait for clk_period;
+        wr_en <= '0';
+        wait for clk_period;
         -- Fim do teste
         wait for 200 ns;
         assert false report "Fim da simulação" severity failure;
