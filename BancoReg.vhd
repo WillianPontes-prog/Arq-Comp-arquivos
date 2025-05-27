@@ -82,78 +82,20 @@ begin
         data_out => data_out5
     );
 
-    process(clk)
-    begin
-        if rising_edge(clk) then
-            case reg_choose is
-                when "000" =>
-                    wr_en0 <= wr_en;
-                    wr_en1 <= '0';
-                    wr_en2 <= '0';
-                    wr_en3 <= '0';
-                    wr_en4 <= '0';
-                    wr_en5 <= '0';
-                when "001" =>
-                    wr_en0 <= '0';
-                    wr_en1 <= wr_en;
-                    wr_en2 <= '0';
-                    wr_en3 <= '0';
-                    wr_en4 <= '0';
-                    wr_en5 <= '0';
-                when "010" =>
-                    wr_en0 <= '0';
-                    wr_en1 <= '0';
-                    wr_en2 <= wr_en;
-                    wr_en3 <= '0';
-                    wr_en4 <= '0';
-                    wr_en5 <= '0';
-                when "011" =>
-                    wr_en0 <= '0';
-                    wr_en1 <= '0';
-                    wr_en2 <= '0';
-                    wr_en3 <= wr_en;
-                    wr_en4 <= '0';
-                    wr_en5 <= '0';
-                when "100" =>
-                    wr_en0 <= '0';
-                    wr_en1 <= '0';
-                    wr_en2 <= '0';
-                    wr_en3 <= '0';
-                    wr_en4 <= wr_en;
-                    wr_en5 <= '0';
-                when "101" =>
-                    wr_en0 <= '0';
-                    wr_en1 <= '0';
-                    wr_en2 <= '0';
-                    wr_en3 <= '0';
-                    wr_en4 <= '0';
-                    wr_en5 <= wr_en;
-                when others =>
-                    wr_en0 <= '0';
-                    wr_en1 <= '0';
-                    wr_en2 <= '0';
-                    wr_en3 <= '0';
-                    wr_en4 <= '0';
-                    wr_en5 <= '0';
-            end case;
-        end if;
+        wr_en0 <= wr_en when reg_choose = "000" else '0';
+        wr_en1 <= wr_en when reg_choose = "001" else '0';
+        wr_en2 <= wr_en when reg_choose = "010" else '0';
+        wr_en3 <= wr_en when reg_choose = "011" else '0';
+        wr_en4 <= wr_en when reg_choose = "100" else '0';
+        wr_en5 <= wr_en when reg_choose = "101" else '0';
+        
 
-        case reg_choose is
-            when "000" =>
-                data_out <= data_out0;
-            when "001" =>
-                data_out <= data_out1;
-            when "010" =>
-                data_out <= data_out2;
-            when "011" =>
-                data_out <= data_out3;
-            when "100" =>
-                data_out <= data_out4;
-            when "101" =>
-                data_out <= data_out5;
-            when others =>
-                data_out <= (others => '0');
-        end case;
-    end process;
+        data_out <= data_out0 when reg_choose = "000" else
+                    data_out1 when reg_choose = "001" else
+                    data_out2 when reg_choose = "010" else
+                    data_out3 when reg_choose = "011" else
+                    data_out4 when reg_choose = "100" else
+                    data_out5 when reg_choose = "101";
+
 
 end architecture BancoReg_a;

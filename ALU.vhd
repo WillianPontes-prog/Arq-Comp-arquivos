@@ -4,9 +4,9 @@ use ieee.numeric_std.all;
 
 entity ALU is
    port(
-      a, b: in std_logic_vector(15 downto 0);
-      op: in std_logic_vector(1 downto 0);
-      result: out std_logic_vector(15 downto 0);
+      a, b: unsigned(15 downto 0);
+      op: in unsigned(1 downto 0);
+      result: out unsigned(15 downto 0);
 
       zero: out std_logic;
       neg: out std_logic;
@@ -16,13 +16,13 @@ end entity ALU;
 
 architecture ALU_a of ALU is
 
-   signal alu_result: std_logic_vector(16 downto 0);
+   signal alu_result: unsigned(16 downto 0);
    
 begin
-   alu_result <= std_logic_vector(unsigned('0' & a) + unsigned('0' & b)) when op = "00" else
-                 std_logic_vector(unsigned('0' & a) - unsigned('0' & b)) when op = "01" else
-                 ('0' & a) and ('0' & b) when op = "10" else
-                 ('0' & a) or ('0' & b) when op = "11";
+   alu_result <= (('0' & a) + ('0' & b)) when op = "00" else
+                 (('0' & a) - ('0' & b)) when op = "01" else
+                 ("0" & a) and ('0' & b) when op = "10" else
+                 ("0" & a) or ('0' & b) when op = "11";
 
    
    result <= alu_result(15 downto 0);
