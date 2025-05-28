@@ -1,28 +1,34 @@
 v 4
-file . "componentes/cUnit.vhd" "1686626edfe188a807b8fda694690a67f188df53" "20250527215905.902":
-  entity cunit at 1( 0) + 0 on 91;
-  architecture uc_a of cunit at 12( 208) + 0 on 92;
-file . "BancoReg.vhd" "b5d8efc9a29eb1a8c6804e8db325739663a4531f" "20250523190826.462":
-  entity bancoreg at 1( 0) + 0 on 77;
-  architecture bancoreg_a of bancoreg at 21( 420) + 0 on 78;
-file . "reg16bits.vhd" "504de9f1c2c8449f0f4f1f47d7df862e5bea2917" "20250522014614.941":
-  entity reg16bits at 1( 0) + 0 on 51;
-  architecture a_reg16bits of reg16bits at 15( 304) + 0 on 52;
-file . "ALU_tb.vhd" "0e2ac1d7df283d4a20970fa7e47618ca5298d9c0" "20250515012840.487":
-  entity alu_tb at 1( 0) + 0 on 45;
-  architecture a_alu_tb of alu_tb at 7( 114) + 0 on 46;
-file . "ALU.vhd" "4acb0ba5ec1eb07826a9ea0bb8d33b424dd2fbf8" "20250523191118.895":
-  entity alu at 1( 0) + 0 on 79;
-  architecture alu_a of alu at 17( 325) + 0 on 80;
-file . "casamentoFeliz.vhd" "91de7f479c26540928f00aef4217d6701762cc85" "20250523132543.254":
-  entity casamentofeliz at 1( 0) + 0 on 69;
-  architecture casamentofeliz_a of casamentofeliz at 22( 776) + 0 on 70;
-file . "casamentoFeliz_tb.vhd" "675699e1d3f182326709b11e51d0e99aab716446" "20250523175813.280":
-  entity casamentofeliz_tb at 1( 0) + 0 on 73;
-  architecture tb of casamentofeliz_tb at 8( 118) + 0 on 74;
-file . "componentes/ROM.vhd" "721ab1f5902f5e46401a777effe31c7815a27c37" "20250527215500.209":
-  entity rom at 1( 0) + 0 on 81;
-  architecture a_rom of rom at 10( 236) + 0 on 82;
+file . ".\playground\stateMachine_tb.vhd" "0654dab4bac3c5176af1578eeab04443c4c97044" "20250528184720.659":
+  entity statemachine_tb at 1( 0) + 0 on 97;
+  architecture a_statemachine_tb of statemachine_tb at 9( 152) + 0 on 98;
+file . ".\componentes\stateMachine.vhd" "c768af2f6ed1869075b2211a1bbe7ac084ca7f2d" "20250528183743.324":
+  entity statemachine at 1( 0) + 0 on 95;
+  architecture statemachine_a of statemachine at 15( 248) + 0 on 96;
 file . "componentes/UC.vhd" "ad8587eb7817dcc595905cb1e2438a6de292a59b" "20250527215744.092":
   entity uc at 1( 0) + 0 on 89;
   architecture uc_a of uc at 12( 202) + 0 on 90;
+file . "componentes/ROM.vhd" "721ab1f5902f5e46401a777effe31c7815a27c37" "20250527215500.209":
+  entity rom at 1( 0) + 0 on 81;
+  architecture a_rom of rom at 10( 236) + 0 on 82;
+file . "casamentoFeliz_tb.vhd" "675699e1d3f182326709b11e51d0e99aab716446" "20250523175813.280":
+  entity casamentofeliz_tb at 1( 0) + 0 on 73;
+  architecture tb of casamentofeliz_tb at 8( 118) + 0 on 74;
+file . "casamentoFeliz.vhd" "91de7f479c26540928f00aef4217d6701762cc85" "20250523132543.254":
+  entity casamentofeliz at 1( 0) + 0 on 69;
+  architecture casamentofeliz_a of casamentofeliz at 22( 776) + 0 on 70;
+file . "ALU.vhd" "4acb0ba5ec1eb07826a9ea0bb8d33b424dd2fbf8" "20250523191118.895":
+  entity alu at 1( 0) + 0 on 79;
+  architecture alu_a of alu at 17( 325) + 0 on 80;
+file . "ALU_tb.vhd" "0e2ac1d7df283d4a20970fa7e47618ca5298d9c0" "20250515012840.487":
+  entity alu_tb at 1( 0) + 0 on 45;
+  architecture a_alu_tb of alu_tb at 7( 114) + 0 on 46;
+file . "reg16bits.vhd" "504de9f1c2c8449f0f4f1f47d7df862e5bea2917" "20250522014614.941":
+  entity reg16bits at 1( 0) + 0 on 51;
+  architecture a_reg16bits of reg16bits at 15( 304) + 0 on 52;
+file . "BancoReg.vhd" "b5d8efc9a29eb1a8c6804e8db325739663a4531f" "20250523190826.462":
+  entity bancoreg at 1( 0) + 0 on 77;
+  architecture bancoreg_a of bancoreg at 21( 420) + 0 on 78;
+file . "componentes/cUnit.vhd" "1686626edfe188a807b8fda694690a67f188df53" "20250527215905.902":
+  entity cunit at 1( 0) + 0 on 91;
+  architecture uc_a of cunit at 12( 208) + 0 on 92;
