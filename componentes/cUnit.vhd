@@ -4,18 +4,15 @@ use ieee.numeric_std.all;
 
 entity cUnit is
    port(
-      pcIn: in unsigned(15 downto 0);
-      pcOut: out unsigned(15 downto 0)
+      opCode: in unsigned(4 downto 0);
+      pcJumpEnable: in std_logic
    );
 end entity cUnit;
 
 architecture UC_a of cUnit is
-
-   signal PC_result: unsigned(15 downto 0);
    
 begin
-   PC_result <= pcIn + 1;
 
-   pcOut <= PC_result;
+   pcJumpEnable <= '1' when opCode = '11111' else '0'
 
 end architecture UC_a;
