@@ -21,7 +21,7 @@ architecture a_primeiroPrograma_tb of CalculadoraMuitoManeira_tb is
 
 begin
    -- uut significa Unit Under Test
-   uut: primeiroPrograma port map(   
+   uut: CalculadoraMuitoManeira port map(   
                     clk => Oclk,
                     reset => Oreset,
                     data_out => Odata_out
