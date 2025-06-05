@@ -1,4 +1,7 @@
 v 4
+file . ".\componentes\BancoReg.vhd" "c6640c7be6103591ac6d92be24907acae521fcca" "20250605014517.281":
+  entity bancoreg at 1( 0) + 0 on 101;
+  architecture bancoreg_a of bancoreg at 21( 412) + 0 on 102;
 file . ".\playground\stateMachine_tb.vhd" "0654dab4bac3c5176af1578eeab04443c4c97044" "20250528184720.659":
   entity statemachine_tb at 1( 0) + 0 on 97;
   architecture a_statemachine_tb of statemachine_tb at 9( 152) + 0 on 98;
@@ -26,9 +29,15 @@ file . "ALU_tb.vhd" "0e2ac1d7df283d4a20970fa7e47618ca5298d9c0" "20250515012840.4
 file . "reg16bits.vhd" "504de9f1c2c8449f0f4f1f47d7df862e5bea2917" "20250522014614.941":
   entity reg16bits at 1( 0) + 0 on 51;
   architecture a_reg16bits of reg16bits at 15( 304) + 0 on 52;
-file . "BancoReg.vhd" "b5d8efc9a29eb1a8c6804e8db325739663a4531f" "20250523190826.462":
-  entity bancoreg at 1( 0) + 0 on 77;
-  architecture bancoreg_a of bancoreg at 21( 420) + 0 on 78;
 file . "componentes/cUnit.vhd" "1686626edfe188a807b8fda694690a67f188df53" "20250527215905.902":
   entity cunit at 1( 0) + 0 on 91;
   architecture uc_a of cunit at 12( 208) + 0 on 92;
+file . ".\componentes\ucewa.vhd" "930213ec50a805f84307792c8da84052c3b80e1e" "20250605014318.216":
+  entity ucewa at 1( 0) + 0 on 99;
+  architecture uc_a of ucewa at 30( 765) + 0 on 100;
+file . ".\componentes\BancoRegina.vhd" "05cdf6bfb7028726d5a89bbd3cebf1b07f02f0e4" "20250605014939.161":
+  entity bancoregina at 1( 0) + 0 on 109;
+  architecture bancoreg_a of bancoregina at 21( 418) + 0 on 110;
+file . ".\componentes\regis16bits.vhd" "19a4ab9a40991d6cf9b3c405cdff46e28f43672d" "20250605014922.100":
+  entity regis16bits at 1( 0) + 0 on 107;
+  architecture a_regis16bits of regis16bits at 15( 306) + 0 on 108;

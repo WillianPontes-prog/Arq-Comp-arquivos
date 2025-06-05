@@ -3,24 +3,24 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 
-entity BancoReg is
+entity BancoRegina is
     port(
         clk         : in std_logic;
         
         wr_en       : in std_logic;
         data_in     : in unsigned(15 downto 0);
         data_out    : out unsigned(15 downto 0);
-        reg_choose  : in std_logic_vector(2 downto 0);
+        reg_choose  : in unsigned(2 downto 0);
 
         rst         : in std_logic
     );
-end entity BancoReg;
+end entity BancoRegina;
 
 
 
-architecture BancoReg_a of BancoReg is
+architecture BancoReg_a of BancoRegina is
 
-    component reg16bits 
+    component regis16bits 
         port (
             clk      : in std_logic;
             rst      : in std_logic;
@@ -34,7 +34,7 @@ architecture BancoReg_a of BancoReg is
     signal data_out0, data_out1, data_out2, data_out3, data_out4, data_out5 : unsigned(15 downto 0);
 
 begin
-    reg0: reg16bits port map (
+    reg0: regis16bits port map (
         clk      => clk,
         rst      => rst,
         wr_en    => wr_en0,
@@ -42,7 +42,7 @@ begin
         data_out => data_out0
     );
 
-    reg1: reg16bits port map (
+    reg1: regis16bits port map (
         clk      => clk,
         rst      => rst,
         wr_en    => wr_en1,
@@ -50,7 +50,7 @@ begin
         data_out => data_out1
     );
 
-    reg2: reg16bits port map (
+    reg2: regis16bits port map (
         clk      => clk,
         rst      => rst,
         wr_en    => wr_en2,
@@ -58,7 +58,7 @@ begin
         data_out => data_out2
     );
 
-    reg3: reg16bits port map (
+    reg3: regis16bits port map (
         clk      => clk,
         rst      => rst,
         wr_en    => wr_en3,
@@ -66,7 +66,7 @@ begin
         data_out => data_out3
     );
 
-    reg4: reg16bits port map (
+    reg4: regis16bits port map (
         clk      => clk,
         rst      => rst,
         wr_en    => wr_en4,
@@ -74,7 +74,7 @@ begin
         data_out => data_out4
     );
 
-    reg5: reg16bits port map (
+    reg5: regis16bits port map (
         clk      => clk,
         rst      => rst,
         wr_en    => wr_en5,
