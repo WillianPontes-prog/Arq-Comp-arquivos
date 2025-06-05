@@ -12,7 +12,6 @@ entity ucewa is
 
         bancoChooseImm: out std_logic;
         bancoWren: out std_logic;
-        bancoReset: out std_logic;
         bancoChoose: out unsigned(2 downto 0);
 
         aluChoose: out unsigned(1 downto 0); -- 1: ADD 2: SUB, 3: AND, 4: OR
@@ -21,7 +20,6 @@ entity ucewa is
         accWren: out std_logic;
 
         iRegisterWren: out std_logic;
-        iRegisterReset: out std_logic;
 
         immOut: out unsigned(15 downto 0)
    );

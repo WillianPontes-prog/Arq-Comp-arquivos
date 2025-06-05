@@ -2,25 +2,36 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity primeiroPrograma is
+entity CalculadoraMuitoManeira is
     port(
         clk         : in std_logic;
         reset       : in std_logic;
         data_out    : out unsigned(16 downto 0)
     );
-end entity primeiroPrograma;
+end entity CalculadoraMuitoManeira;
 
-architecture primeiroPrograma_a of primeiroPrograma is
+architecture primeiroPrograma_a of CalculadoraMuitoManeira is
 
     component ucewa
         port(
-        PcIn: in unsigned(15 downto 0);
         instruction: in unsigned(16 downto 0);
+        state: in unsigned(1 downto 0);
 
-        state: in std_logic;
+        pcWren: out std_logic;
+        pcChooseImm: out std_logic;
 
-        PcWren: out std_logic;
-        PcOut: out unsigned(15 downto 0)
+        bancoChooseImm: out std_logic;
+        bancoWren: out std_logic;
+        bancoChoose: out unsigned(2 downto 0);
+
+        aluChoose: out unsigned(1 downto 0); -- 1: ADD 2: SUB, 3: AND, 4: OR
+
+        accChoose: out unsigned(1 downto 0); -- 0: Imm, 1: Banco, 2: ALU
+        accWren: out std_logic;
+
+        iRegisterWren: out std_logic;
+
+        immOut: out unsigned(15 downto 0)
         );
     end component;
 
@@ -42,54 +53,173 @@ architecture primeiroPrograma_a of primeiroPrograma is
         );
     end component;
 
-
     component stateMachine
         port (
-            SM_clk: in std_logic;
-            SM_rst: in std_logic;
-            SM_out: out std_logic
+            clk,rst: in std_logic;
+         estado: out unsigned(1 downto 0)
         );
     end component;
 
-    signal pcIn, pcOut : unsigned(15 downto 0);
-    signal dataRom : unsigned(16 downto 0);
-    signal currentState :  std_logic;
-    signal pc_wren : std_logic;
+    component somador
+        port (
+            pcIn: in unsigned(15 downto 0);
+            pcOut: out unsigned(15 downto 0)
+        );
+    end component;
+
+    component IRado
+        port (
+            clk: in std_logic;
+            rst: in std_logic;
+            wr_en: in std_logic;
+            data_in: in unsigned(16 downto 0);
+            data_out: out unsigned(16 downto 0)
+        );
+    end component;
+
+    component ALUla
+        port (
+            a: in unsigned(15 downto 0);
+            b: in unsigned(15 downto 0);
+            op: in unsigned(1 downto 0);
+            result: out unsigned(15 downto 0);
+            zero: out std_logic;
+            neg: out std_logic;
+            carry: out std_logic
+        );
+    end component;
+
+    component BancoRegina
+        port (
+        clk         : in std_logic;
+        
+        wr_en       : in std_logic;
+        data_in     : in unsigned(15 downto 0);
+        data_out    : out unsigned(15 downto 0);
+        reg_choose  : in unsigned(2 downto 0);
+
+        rst         : in std_logic
+        );
+    end component;
+
+    signal pcIn, pcOut: unsigned(15 downto 0);
+    signal somadorOut: unsigned(15 downto 0);
+
+    signal pcWren: std_logic;
+
+    signal irIn, irOut: unsigned(16 downto 0);
+    signal irWren: std_logic;
+
+    signal currentState: unsigned(1 downto 0);
+
+    signal bancoRegDataOut, accumulatorDataOut, ALUOut, bancoRegDataIn: unsigned(15 downto 0);
+
+    signal ALUop: unsigned(1 downto 0);
+
+    signal flagZ, flagN, flagC: std_logic;  
+
+    signal bancoWren: std_logic;  
+
+    signal bancoRegChoose: unsigned(2 downto 0);  
+    signal chooseImmPc: std_logic;
+    signal bancoChooseImm: std_logic;
+
+    signal accChoose: unsigned(1 downto 0);
+    signal accWren: std_logic;
+    signal immOut: unsigned(15 downto 0);
+
+    signal accIn: unsigned(15 downto 0);
+    signal endereco: unsigned(6 downto 0);
 
 begin
 
-    state_machine: stateMachine
-        port map (
-            SM_clk => clk,
-            SM_rst => reset,
-            SM_out => currentState
-        );
+    pc: regis16bits port map (
+        clk      => clk,
+        rst      => reset,
+        wr_en    => pcWren,  
+        data_in  => pcIn,  
+        data_out => pcOut  
+    );
 
-    pc: regis16bits
-        port map (
-            clk      => clk,
-            rst      => reset,
-            wr_en    => pc_wren,  
-            data_in  => pcIn, 
-            data_out => pcOut
-        );
+    pc_somador: somador port map (
+        pcIn => pcOut,
+        pcOut => somadorOut  
+    );
 
-    control_unit: ucewa
-        port map (
-            pcIn  => pcOut,
-            pcOut => pcIn,
-            instruction => dataRom,
-            state => currentState,
-            PcWren => pc_wren
-        );
+    rom: roma port map (
+        clk => clk,
+        endereco => endereco,  
+        dado => irIn  
+    );
 
-    rom_unit: roma
-        port map (
-            clk      => clk,
-            endereco => pcOut(6 downto 0),
-            dado     => dataRom
-        );
+    instruction_register: IRado port map (
+        clk => clk,
+        rst => reset,
+        wr_en => irWren,  
+        data_in => irIn,  
+        data_out => irOut  
+    );
 
-    data_out <= dataRom;
+    state_machine: stateMachine port map (
+        clk => clk,
+        rst => reset,
+        estado => currentState  
+    );
+
+    alu_ut: ALUla port map (
+        a => bancoRegDataOut,  
+        b => accumulatorDataOut,  
+        op => ALUop, 
+        result => ALUOut, 
+        zero => flagZ,  
+        neg => flagN,  
+        carry => flagC  
+    );
+
+    banco_regs: BancoRegina port map (
+        clk => clk,
+        wr_en => bancoWren,  
+        data_in => bancoRegDataIn,  
+        data_out => bancoRegDataOut,  
+        reg_choose => bancoRegChoose,  
+        rst => reset
+    );
+
+    uc: ucewa port map (
+        instruction => irOut,
+        state => currentState,
+
+        pcWren => pcWren,
+        pcChooseImm => chooseImmPc,
+
+        bancoChooseImm => bancoChooseImm,
+        bancoWren   => bancoWren,
+        bancoChoose => bancoRegChoose,
+
+        aluChoose => ALUop,
+
+        accChoose => accChoose,
+        accWren => accWren,
+
+        iRegisterWren => irWren,
+
+        immOut => immOut
+    );
+
+    accumulator: regis16bits port map (
+        clk => clk,
+        rst => reset,
+        wr_en => accWren,  
+        data_in => accIn,  -- Input from lower bits of data_out
+        data_out => accumulatorDataOut  -- Output to lower bits of data_out
+    );
+
+    pcIn <= immOut when chooseImmPc = '1' else somadorOut;
+    bancoRegDataIn <= immOut when bancoChooseImm = '1' else accumulatorDataOut;
+
+    accIn <= immOut when accChoose = "00" else
+             bancoRegDataOut when accChoose = "01" else
+             ALUOut;
+    endereco <=  pcOut(6 downto 0);
 
 end architecture primeiroPrograma_a;

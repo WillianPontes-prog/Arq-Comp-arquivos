@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity ALU is
+entity ALUla is
    port(
       a, b: unsigned(15 downto 0);
       op: in unsigned(1 downto 0);
@@ -12,9 +12,9 @@ entity ALU is
       neg: out std_logic;
       carry: out std_logic 
    );
-end entity ALU;
+end entity ALUla;
 
-architecture ALU_a of ALU is
+architecture ALU_a of ALUla is
 
    signal alu_result: unsigned(16 downto 0);
    
