@@ -6,8 +6,12 @@ entity CalculadoraMuitoManeira is
     port(
         clk         : in std_logic;
         reset       : in std_logic;
-        data_out    : out unsigned(16 downto 0)
-    );
+        estado       : out unsigned(1 downto 0);
+        instructionOut : out unsigned(16 downto 0);
+        BancoRegData : out unsigned(15 downto 0);
+        ulaOut    : out unsigned(15 downto 0);  
+        pc_out         : out unsigned(15 downto 0)
+    );  
 end entity CalculadoraMuitoManeira;
 
 architecture primeiroPrograma_a of CalculadoraMuitoManeira is
@@ -221,5 +225,11 @@ begin
              bancoRegDataOut when accChoose = "01" else
              ALUOut;
     endereco <=  pcOut(6 downto 0);
+
+    estado <= currentState;
+    ulaOut <= ALUOut;
+    pc_out <= pcOut;
+    BancoRegData <= bancoRegDataOut;
+    instructionOut <= irOut;
 
 end architecture primeiroPrograma_a;

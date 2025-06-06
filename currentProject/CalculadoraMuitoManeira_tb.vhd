@@ -6,127 +6,63 @@ use ieee.numeric_std.all;
 entity CalculadoraMuitoManeira_tb is
 end;
 
-architecture a_primeiroPrograma_tb of CalculadoraMuitoManeira_tb is
-    component CalculadoraMuitoManeira
-        port(
+architecture ateste_tb of CalculadoraMuitoManeira_tb is
+    component CalculadoraMuitoManeira is   
+    port(
         clk         : in std_logic;
         reset       : in std_logic;
-        data_out    : out unsigned(16 downto 0)
-    );
+        estado       : out unsigned(1 downto 0);
+        instructionOut : out unsigned(16 downto 0);
+        BancoRegData : out unsigned(15 downto 0);
+        ulaOut    : out unsigned(15 downto 0);  
+        pc_out         : out unsigned(15 downto 0)
+    );       -- aqui vai seu componente a testar
     end component;
+                                -- 100 ns é o período que escolhi para o clock
+    constant period_time : time      := 100 ns;
+    signal   finished    : std_logic := '0';
 
-    signal Oclk: std_logic := '0';
-    signal Oreset: std_logic := '0';
-    signal Odata_out: unsigned(16 downto 0);
+    signal   clk, reset  : std_logic;
+    signal  estado      : unsigned(1 downto 0);
+    signal  instructionOut : unsigned(16 downto 0);
+    signal  BancoRegData : unsigned(15 downto 0);
+    signal  ulaOut    : unsigned(15 downto 0);
+    signal  pc_out         : unsigned(15 downto 0);
 
 begin
-   -- uut significa Unit Under Test
-   uut: CalculadoraMuitoManeira port map(   
-                    clk => Oclk,
-                    reset => Oreset,
-                    data_out => Odata_out
-                    );
-process
+    uut: CalculadoraMuitoManeira port map (
+        clk         => clk,
+        reset       => reset,
+        estado      => estado,
+        instructionOut => instructionOut,
+        BancoRegData => BancoRegData,
+        ulaOut      => ulaOut,
+        pc_out          => pc_out
+    );  -- aqui vai a instância do seu componente
+    
+    reset_global: process
     begin
-        Oclk <= '0';
-        Oreset <= '1';
-        wait for 10 ns;
-        Oreset <= '0';
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0'; 
-        wait for 10 ns; 
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0'; 
-        wait for 10 ns; 
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0'; 
-        wait for 10 ns; 
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0'; 
-        wait for 10 ns; 
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0'; 
-        wait for 10 ns; 
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0'; 
-        wait for 10 ns; 
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0'; 
-        wait for 10 ns; 
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0'; 
-        wait for 10 ns; 
-        Oclk <= '1';
-        wait for 10 ns;
-        Oclk <= '0';
-        wait for 10 ns;
-        Oclk <= '1';
-
-        
-wait;
-   end process;
-end architecture;
+        reset <= '1';
+        wait for period_time*2; -- espera 2 clocks, pra garantir
+        reset <= '0';
+        wait;
+    end process;
+    
+    sim_time_proc: process
+    begin
+        wait for 10 us;         -- <== TEMPO TOTAL DA SIMULAÇÃO!!!
+        finished <= '1';
+        wait;
+    end process sim_time_proc;
+    clk_proc: process
+    begin                       -- gera clock até que sim_time_proc termine
+        while finished /= '1' loop
+            clk <= '0';
+            wait for period_time/2;
+            clk <= '1';
+            wait for period_time/2;
+        end loop;
+        wait;
+    end process clk_proc;
+   
+end architecture ateste_tb;

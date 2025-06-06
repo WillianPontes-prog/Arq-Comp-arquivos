@@ -55,7 +55,7 @@ architecture uc_a of ucewa is
       accChoose <= "00" when opcode = "0111" else
                      "01" when opcode = "0011" else
                      "10";
-      accWren <= '1' when state = "01" and not opcode = "0100" and not opcode = "0010" else '0';
+      accWren <= '1' when state = "01" and opcode /= "0100" and opcode /= "0010" else '0';
 
 
 end architecture uc_a;
