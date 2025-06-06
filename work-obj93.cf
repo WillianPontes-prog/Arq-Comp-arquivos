@@ -2,9 +2,9 @@ v 4
 file . ".\componentes\somador.vhd" "dc92feb0f0010d0a3f0e645085e85d24041c2854" "20250605024134.866":
   entity somador at 1( 0) + 0 on 133;
   architecture somador_a of somador at 12( 216) + 0 on 134;
-file . ".\currentProject\CalculadoraMuitoManeira.vhd" "9b129d7467d44118d0342ecb4e80ccef6d57ce44" "20250605210138.708":
-  entity calculadoramuitomaneira at 1( 0) + 0 on 169;
-  architecture primeiroprograma_a of calculadoramuitomaneira at 17( 499) + 0 on 170;
+file . ".\currentProject\CalculadoraMuitoManeira.vhd" "9b129d7467d44118d0342ecb4e80ccef6d57ce44" "20250606183501.723":
+  entity calculadoramuitomaneira at 1( 0) + 0 on 183;
+  architecture primeiroprograma_a of calculadoramuitomaneira at 17( 499) + 0 on 184;
 file . ".\componentes\IRado.vhd" "1ddc86e8cf59735d391ff0172d0c50e22ee05271" "20250605015427.385":
   entity irado at 1( 0) + 0 on 117;
   architecture a_irado of irado at 15( 300) + 0 on 118;
@@ -50,9 +50,9 @@ file . ".\componentes\regis16bits.vhd" "19a4ab9a40991d6cf9b3c405cdff46e28f43672d
 file . ".\componentes\ALU.vhd" "16157891ffc494c333096cf01a52d6013e2d1202" "20250605024016.501":
   entity alula at 1( 0) + 0 on 129;
   architecture alu_a of alula at 17( 329) + 0 on 130;
-file . ".\componentes\ROM.vhd" "b46fda931a768e324e1d3397536e7569c735b5dc" "20250605202943.605":
-  entity roma at 1( 0) + 0 on 157;
-  architecture a_rom of roma at 10( 237) + 0 on 158;
-file . ".\currentProject\CalculadoraMuitoManeira_tb.vhd" "67af2ceb9ae0f3222ed273f7ca52c44e3a4093d5" "20250605210411.747":
-  entity calculadoramuitomaneira_tb at 1( 0) + 0 on 173;
-  architecture ateste_tb of calculadoramuitomaneira_tb at 9( 163) + 0 on 174;
+file . ".\componentes\ROM.vhd" "bee6aa838db584b69d6d3b434d8a2572f8fd1bfa" "20250606183452.848":
+  entity roma at 1( 0) + 0 on 181;
+  architecture a_rom of roma at 10( 237) + 0 on 182;
+file . ".\currentProject\CalculadoraMuitoManeira_tb.vhd" "67af2ceb9ae0f3222ed273f7ca52c44e3a4093d5" "20250606183512.531":
+  entity calculadoramuitomaneira_tb at 1( 0) + 0 on 185;
+  architecture ateste_tb of calculadoramuitomaneira_tb at 9( 163) + 0 on 186;
