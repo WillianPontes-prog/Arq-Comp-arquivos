@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity CalculadoraMuitoManeira is
+entity XicoXavier is
     port(
         clk         : in std_logic;
         reset       : in std_logic;
@@ -12,9 +12,9 @@ entity CalculadoraMuitoManeira is
         ulaOut    : out unsigned(15 downto 0);  
         pc_out         : out unsigned(15 downto 0)
     );  
-end entity CalculadoraMuitoManeira;
+end entity XicoXavier;
 
-architecture primeiroPrograma_a of CalculadoraMuitoManeira is
+architecture XicoXavier_a of XicoXavier is
 
     component ucewa
         port(
@@ -232,4 +232,4 @@ begin
     BancoRegData <= bancoRegDataOut;
     instructionOut <= irOut;
 
-end architecture primeiroPrograma_a;
+end architecture XicoXavier_a;

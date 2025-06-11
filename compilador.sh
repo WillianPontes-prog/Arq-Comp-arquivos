@@ -14,5 +14,12 @@ ghdl -e roma
 ghdl -e somador
 ghdl -e stateMachine
 
+
+ghdl -a ./currentProject/XicoXavier.vhd
+ghdl -e XicoXavier
+
+ghdl -a ./currentProject/XicoXavier_tb.vhd
+ghdl -e XicoXavier_tb
+
 echo "Pressione ENTER para sair..."
 read
