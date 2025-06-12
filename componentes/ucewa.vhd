@@ -46,13 +46,13 @@ architecture uc_a of ucewa is
 
       iRegisterWren <= '1' when state = "00" else '0';
 
-      pcWren <= '1' when state = "01" or opcode = OPCODE_JMP or (opcode = OPCODE_BLE and state = "10" and (zero = '1' or neg = '1')) else '0';
+      pcWren <= '1' when (state = "10" and opcode /= OPCODE_BLE) or opcode = OPCODE_JMP or (opcode = OPCODE_BLE and state = "10" and (zero = '1' or neg = '1')) else '0';
       choosePCIn <= "01" when opcode = OPCODE_JMP else "10" when opcode = OPCODE_BLE and state = "10" else
                     "00"; 
 
       immOut <= "000000" & immInstruction when  opcode /= OPCODE_ADDIS 
-                                          or    opcode /= OPCODE_BLE 
-                                          or    opcode /= OPCODE_BCS 
+                                          and    opcode /= OPCODE_BLE 
+                                          and    opcode /= OPCODE_BCS 
                   else "111111" & immInstruction;
 
       signedON <= '1' when  opcode = OPCODE_ADDIS 
@@ -71,7 +71,7 @@ architecture uc_a of ucewa is
       aluSrcA <= '1' when opcode = OPCODE_BLE and state = "10" else 
                   '0';
 
-      accChoose <= "00" when opcode = OPCODE_ADDI or (opcode = OPCODE_BLE and state = "10") else
+      accChoose <= "00" when opcode = OPCODE_ADDI or (opcode = OPCODE_BLE and state = "01") else
                      "01" when opcode = OPCODE_MOVA else
                      "10";
                      

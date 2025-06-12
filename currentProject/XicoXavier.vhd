@@ -112,6 +112,21 @@ architecture XicoXavier_a of XicoXavier is
         );
     end component;
 
+    component flagRegister
+        port(
+            clk: in std_logic;
+            rst: in std_logic;
+            wr_en: in std_logic;
+            zeroIn: in std_logic;
+            negIn: in std_logic;
+            carryIn: in std_logic;
+
+            zeroOut: out std_logic;
+            negOut: out std_logic;
+            carryOut: out std_logic
+        );
+    end component;
+
     signal pcIn, pcOut: unsigned(15 downto 0);
     signal somadorOut: unsigned(15 downto 0);
 
@@ -127,6 +142,7 @@ architecture XicoXavier_a of XicoXavier is
     signal ALUop: unsigned(1 downto 0);
 
     signal flagZ, flagN, flagC: std_logic;  
+    signal flagZOut, flagNOut, flagCOut: std_logic;  
 
     signal bancoWren: std_logic;  
 
@@ -225,9 +241,9 @@ begin
 
         immOut => immOut,
 
-        zero => flagZ,
-        neg => flagN,
-        carry => flagC
+        zero => flagZOut,
+        neg => flagNOut,
+        carry => flagCOut
     );
 
     accumulator: regis16bits port map (
@@ -238,6 +254,19 @@ begin
         data_out => accumulatorDataOut  -- Output to lower bits of data_out
     );
 
+    flags: flagRegister port map (
+        clk => clk,
+        rst => reset,
+        wr_en => '1',  
+        zeroIn => flagZ,  
+        negIn => flagN,  
+        carryIn => flagC,  
+
+        zeroOut => flagZOut,  
+        negOut => flagNOut,  
+        carryOut => flagCOut  
+    );
+
     pcIn <= immOut when choosePc = "01" else somadorOut when choosePc = "00" else AluOut;
     bancoRegDataIn <= immOut when bancoChooseImm = '1' else accumulatorDataOut;
 
@@ -246,7 +275,7 @@ begin
              ALUOut;
     endereco <=  pcOut(6 downto 0);
     
-    alu_a <= bancoRegDataOut when AluSrcA = '1' else
+    alu_a <= bancoRegDataOut when AluSrcA = '0' else
              pcOut;
 
     estado <= currentState;

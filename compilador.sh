@@ -7,7 +7,7 @@ ghdl -a ./componentes/roma.vhd
 ghdl -a ./componentes/somador.vhd
 ghdl -a ./componentes/stateMachine.vhd
 ghdl -a ./componentes/ucewa.vhd
-
+ghdl -a ./componentes/flagRegister.vhd
 
 ghdl -e ALUla
 ghdl -e BancoRegina
@@ -17,6 +17,7 @@ ghdl -e roma
 ghdl -e somador
 ghdl -e stateMachine
 ghdl -e ucewa
+ghdl -e flagRegister
 
 ghdl -a ./currentProject/XicoXavier.vhd
 ghdl -e XicoXavier
