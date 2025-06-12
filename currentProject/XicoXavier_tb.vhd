@@ -3,11 +3,11 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 -- a entidade tem o mesmo nome do arquivo
-entity CalculadoraMuitoManeira_tb is
+entity XicoXavier_tb is
 end;
 
-architecture ateste_tb of CalculadoraMuitoManeira_tb is
-    component CalculadoraMuitoManeira is   
+architecture ateste_tb of XicoXavier_tb is
+    component XicoXavier is   
     port(
         clk         : in std_logic;
         reset       : in std_logic;
@@ -30,7 +30,7 @@ architecture ateste_tb of CalculadoraMuitoManeira_tb is
     signal  pc_out         : unsigned(15 downto 0);
 
 begin
-    uut: CalculadoraMuitoManeira port map (
+    uut: XicoXavier port map (
         clk         => clk,
         reset       => reset,
         estado      => estado,

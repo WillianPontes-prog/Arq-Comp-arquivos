@@ -20,15 +20,19 @@ architecture XicoXavier_a of XicoXavier is
         port(
         instruction: in unsigned(16 downto 0);
         state: in unsigned(1 downto 0);
+        zero: in std_logic;
+        neg: in std_logic;
+        carry: in std_logic;
 
         pcWren: out std_logic;
-        pcChooseImm: out std_logic;
-
+        choosePCIn: out unsigned(1 downto 0); 
         bancoChooseImm: out std_logic;
         bancoWren: out std_logic;
-        bancoChoose: out unsigned(2 downto 0);
+        bancoChoose: out unsigned(2 downto 0); 
 
         aluChoose: out unsigned(1 downto 0); -- 1: ADD 2: SUB, 3: AND, 4: OR
+        aluSrcA: out std_logic;
+        signedON: out std_logic; 
 
         accChoose: out unsigned(1 downto 0); -- 0: Imm, 1: Banco, 2: ALU
         accWren: out std_logic;
@@ -81,12 +85,14 @@ architecture XicoXavier_a of XicoXavier is
         );
     end component;
 
-    component ALUla
+    component ALUla 
         port (
-            a: in unsigned(15 downto 0);
-            b: in unsigned(15 downto 0);
+            a, b: unsigned(15 downto 0);
             op: in unsigned(1 downto 0);
+            signedON: in std_logic;
+
             result: out unsigned(15 downto 0);
+
             zero: out std_logic;
             neg: out std_logic;
             carry: out std_logic
@@ -125,7 +131,7 @@ architecture XicoXavier_a of XicoXavier is
     signal bancoWren: std_logic;  
 
     signal bancoRegChoose: unsigned(2 downto 0);  
-    signal chooseImmPc: std_logic;
+    signal choosePc: unsigned(1 downto 0);
     signal bancoChooseImm: std_logic;
 
     signal accChoose: unsigned(1 downto 0);
@@ -134,6 +140,13 @@ architecture XicoXavier_a of XicoXavier is
 
     signal accIn: unsigned(15 downto 0);
     signal endereco: unsigned(6 downto 0);
+
+
+    signal AluSrcA: std_logic; 
+    signal SignedON: std_logic;  
+
+    signal alu_a : unsigned(15 downto 0);
+    
 
 begin
 
@@ -171,13 +184,14 @@ begin
     );
 
     alu_ut: ALUla port map (
-        a => bancoRegDataOut,  
+        a => alu_a,  
         b => accumulatorDataOut,  
         op => ALUop, 
         result => ALUOut, 
         zero => flagZ,  
         neg => flagN,  
-        carry => flagC  
+        carry => flagC,  
+        signedON => SignedON
     );
 
     banco_regs: BancoRegina port map (
@@ -194,20 +208,26 @@ begin
         state => currentState,
 
         pcWren => pcWren,
-        pcChooseImm => chooseImmPc,
+        choosePCIn => choosePc,
 
         bancoChooseImm => bancoChooseImm,
         bancoWren   => bancoWren,
         bancoChoose => bancoRegChoose,
 
         aluChoose => ALUop,
+        aluSrcA => AluSrcA,
+        signedON => SignedON,
 
         accChoose => accChoose,
         accWren => accWren,
 
         iRegisterWren => irWren,
 
-        immOut => immOut
+        immOut => immOut,
+
+        zero => flagZ,
+        neg => flagN,
+        carry => flagC
     );
 
     accumulator: regis16bits port map (
@@ -218,18 +238,22 @@ begin
         data_out => accumulatorDataOut  -- Output to lower bits of data_out
     );
 
-    pcIn <= immOut when chooseImmPc = '1' else somadorOut;
+    pcIn <= immOut when choosePc = "01" else somadorOut when choosePc = "00" else AluOut;
     bancoRegDataIn <= immOut when bancoChooseImm = '1' else accumulatorDataOut;
 
     accIn <= immOut when accChoose = "00" else
              bancoRegDataOut when accChoose = "01" else
              ALUOut;
     endereco <=  pcOut(6 downto 0);
+    
+    alu_a <= bancoRegDataOut when AluSrcA = '1' else
+             pcOut;
 
     estado <= currentState;
     ulaOut <= ALUOut;
     pc_out <= pcOut;
     BancoRegData <= bancoRegDataOut;
     instructionOut <= irOut;
+
 
 end architecture XicoXavier_a;
