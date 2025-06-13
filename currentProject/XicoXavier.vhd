@@ -60,7 +60,7 @@ architecture XicoXavier_a of XicoXavier is
     component stateMachine
         port (
             clk,rst: in std_logic;
-         estado: out unsigned(1 downto 0)
+            estado: out unsigned(1 downto 0)
         );
     end component;
 

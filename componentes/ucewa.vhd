@@ -21,7 +21,9 @@ entity ucewa is
 
         iRegisterWren: out std_logic;
 
-        immOut: out unsigned(15 downto 0)
+        immOut: out unsigned(15 downto 0);
+
+        signedON: out std_logic
    );
 end entity ucewa;
 
@@ -47,6 +49,11 @@ architecture uc_a of ucewa is
                                           or    opcode /= "1010" 
                   else "111111" & immInstruction;
 
+      signedON  immOut <= '1' when  opcode = "1000" 
+                     or    opcode = "1001" 
+                     or    opcode = "1010" 
+                  else '0';
+
       bancoChooseImm <= '1' when opcode = "0001" and state = "01" else '0';
       bancoWren <= '1' when state = "01" and (opcode = "0100" or opcode = "0001") else '0';
       bancoChoose <= operand1;
@@ -58,7 +65,7 @@ architecture uc_a of ucewa is
       accChoose <= "00" when opcode = "0111" else
                      "01" when opcode = "0011" else
                      "10";
-                     
+
       accWren <= '1' when state = "01" and opcode /= "0100" and opcode /= "0010" else '0';
 
 
