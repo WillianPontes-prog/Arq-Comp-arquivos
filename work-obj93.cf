@@ -1,36 +1,36 @@
 v 4
-file . "./currentProject/XicoXavier.vhd" "bd18c6b84aefa1bb56422edc8522c76f16e6b552" "20250612140259.325":
-  entity xicoxavier at 1( 0) + 0 on 706;
-  architecture xicoxavier_a of xicoxavier at 17( 473) + 0 on 707;
-file . "./componentes/stateMachine.vhd" "9ba3c03884428b923739f486a8ac5005b3050077" "20250612140258.824":
-  entity statemachine at 1( 0) + 0 on 700;
-  architecture a_maq_estados of statemachine at 9( 192) + 0 on 701;
-file . "./componentes/roma.vhd" "d984722584ae6577b64fa57de2125c4d123b7351" "20250612140258.784":
-  entity roma at 1( 0) + 0 on 696;
-  architecture a_rom of roma at 10( 237) + 0 on 697;
-file . "./componentes/IRado.vhd" "1ddc86e8cf59735d391ff0172d0c50e22ee05271" "20250612140258.739":
-  entity irado at 1( 0) + 0 on 692;
-  architecture a_irado of irado at 15( 300) + 0 on 693;
-file . "./componentes/ALUla.vhd" "5ac65c8195baf004fe3b0ee68dc76d3ff4ddc9d7" "20250612140258.642":
-  entity alula at 1( 0) + 0 on 688;
-  architecture alu_a of alula at 19( 362) + 0 on 689;
-file . "./componentes/BancoRegina.vhd" "05cdf6bfb7028726d5a89bbd3cebf1b07f02f0e4" "20250612140258.708":
-  entity bancoregina at 1( 0) + 0 on 690;
-  architecture bancoreg_a of bancoregina at 21( 418) + 0 on 691;
-file . "./componentes/regis16bits.vhd" "19a4ab9a40991d6cf9b3c405cdff46e28f43672d" "20250612140258.761":
-  entity regis16bits at 1( 0) + 0 on 694;
-  architecture a_regis16bits of regis16bits at 15( 306) + 0 on 695;
-file . "./componentes/somador.vhd" "dc92feb0f0010d0a3f0e645085e85d24041c2854" "20250612140258.801":
-  entity somador at 1( 0) + 0 on 698;
-  architecture somador_a of somador at 12( 216) + 0 on 699;
-file . "./componentes/opcodes_pkg.vhd" "169b555bada0315763beea685a5d19d8eaa6d945" "20250612140258.624":
-  package opcodes_pkg at 2( 48) + 0 on 687;
-file . "./currentProject/XicoXavier_tb.vhd" "dcbbcdfc2b43a8da14113d26ac90d6e88a5fde64" "20250612140259.405":
-  entity xicoxavier_tb at 1( 0) + 0 on 708;
-  architecture ateste_tb of xicoxavier_tb at 9( 150) + 0 on 709;
-file . "./componentes/ucewa.vhd" "ee0ca74d1a6fcf3fda2194bd2adf0c0423dac5ca" "20250612140258.843":
-  entity ucewa at 1( 0) + 0 on 702;
-  architecture uc_a of ucewa at 35( 915) + 0 on 703;
-file . "./componentes/flagRegister.vhd" "60009a260e938a9d3f7f0a8aa812036b6e446246" "20250612140258.872":
-  entity flagregister at 1( 0) + 0 on 704;
-  architecture a_regis16bits of flagregister at 20( 411) + 0 on 705;
+file . "./currentProject/XicoXavier.vhd" "bd18c6b84aefa1bb56422edc8522c76f16e6b552" "20250613013742.054":
+  entity xicoxavier at 1( 0) + 0 on 982;
+  architecture xicoxavier_a of xicoxavier at 17( 473) + 0 on 983;
+file . "./componentes/stateMachine.vhd" "9ba3c03884428b923739f486a8ac5005b3050077" "20250613013741.679":
+  entity statemachine at 1( 0) + 0 on 976;
+  architecture a_maq_estados of statemachine at 9( 192) + 0 on 977;
+file . "./componentes/roma.vhd" "d984722584ae6577b64fa57de2125c4d123b7351" "20250613013741.544":
+  entity roma at 1( 0) + 0 on 964;
+  architecture a_rom of roma at 10( 237) + 0 on 965;
+file . "./componentes/IRado.vhd" "1ddc86e8cf59735d391ff0172d0c50e22ee05271" "20250613013741.635":
+  entity irado at 1( 0) + 0 on 970;
+  architecture a_irado of irado at 15( 300) + 0 on 971;
+file . "./componentes/ALUla.vhd" "5ac65c8195baf004fe3b0ee68dc76d3ff4ddc9d7" "20250613013741.604":
+  entity alula at 1( 0) + 0 on 966;
+  architecture alu_a of alula at 19( 362) + 0 on 967;
+file . "./componentes/BancoRegina.vhd" "05cdf6bfb7028726d5a89bbd3cebf1b07f02f0e4" "20250613013741.619":
+  entity bancoregina at 1( 0) + 0 on 968;
+  architecture bancoreg_a of bancoregina at 21( 418) + 0 on 969;
+file . "./componentes/regis16bits.vhd" "19a4ab9a40991d6cf9b3c405cdff46e28f43672d" "20250613013741.650":
+  entity regis16bits at 1( 0) + 0 on 972;
+  architecture a_regis16bits of regis16bits at 15( 306) + 0 on 973;
+file . "./componentes/somador.vhd" "dc92feb0f0010d0a3f0e645085e85d24041c2854" "20250613013741.664":
+  entity somador at 1( 0) + 0 on 974;
+  architecture somador_a of somador at 12( 216) + 0 on 975;
+file . "./componentes/opcodes_pkg.vhd" "169b555bada0315763beea685a5d19d8eaa6d945" "20250613013741.529":
+  package opcodes_pkg at 2( 48) + 0 on 963;
+file . "./currentProject/XicoXavier_tb.vhd" "62b18e00b12a23555fd592e5233cf11555581636" "20250613013742.133":
+  entity xicoxavier_tb at 1( 0) + 0 on 984;
+  architecture ateste_tb of xicoxavier_tb at 9( 150) + 0 on 985;
+file . "./componentes/ucewa.vhd" "c3720ff964dc3b78e9f3496e5f8b27911b911b11" "20250613013741.695":
+  entity ucewa at 1( 0) + 0 on 978;
+  architecture uc_a of ucewa at 35( 915) + 0 on 979;
+file . "./componentes/flagRegister.vhd" "60009a260e938a9d3f7f0a8aa812036b6e446246" "20250613013741.709":
+  entity flagregister at 1( 0) + 0 on 980;
+  architecture a_regis16bits of flagregister at 20( 411) + 0 on 981;

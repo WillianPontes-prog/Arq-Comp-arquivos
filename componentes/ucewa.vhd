@@ -71,11 +71,11 @@ architecture uc_a of ucewa is
       aluSrcA <= '1' when opcode = OPCODE_BLE and state = "10" else 
                   '0';
 
-      accChoose <= "00" when opcode = OPCODE_ADDI or (opcode = OPCODE_BLE and state = "01") else
+      accChoose <=   "00" when (opcode = OPCODE_ADDI and state /= "10") or (opcode = OPCODE_BLE and state = "01") else
                      "01" when opcode = OPCODE_MOVA else
                      "10";
                      
-      accWren <= '1' when (state = "01" or state = "10") and opcode /= OPCODE_READA and opcode /= OPCODE_JMP else '0';
+      accWren <= '1' when (state = "01" or state = "10") and (opcode /= OPCODE_READA or opcode /= "01") and opcode /= OPCODE_JMP else '0';
 
       
 
