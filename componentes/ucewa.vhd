@@ -37,6 +37,20 @@ end entity ucewa;
 
 architecture uc_a of ucewa is
 
+   -- Aliases para os opcodes
+   constant OPCODE_NOP    : unsigned(3 downto 0) := "0000";
+   constant OPCODE_LD     : unsigned(3 downto 0) := "0001";
+   constant OPCODE_JMP    : unsigned(3 downto 0) := "0010";
+   constant OPCODE_MOVA   : unsigned(3 downto 0) := "0011";
+   constant OPCODE_READA  : unsigned(3 downto 0) := "0100";
+   constant OPCODE_ADD    : unsigned(3 downto 0) := "0101";
+   constant OPCODE_SUB    : unsigned(3 downto 0) := "0110";
+   constant OPCODE_ADDI   : unsigned(3 downto 0) := "0111";
+   constant OPCODE_ADDIS  : unsigned(3 downto 0) := "1000";
+   constant OPCODE_BLE    : unsigned(3 downto 0) := "1001";
+   constant OPCODE_BCS    : unsigned(3 downto 0) := "1010";
+   constant OPCODE_CMP    : unsigned(3 downto 0) := "1011";
+
    signal opCode: unsigned(3 downto 0);
    signal operand1: unsigned(2 downto 0);
    signal immInstruction: unsigned(9 downto 0);
@@ -49,38 +63,41 @@ architecture uc_a of ucewa is
 
       iRegisterWren <= '1' when state = "00" else '0';
 
-      pcWren <= '1' when (state = "10" and (opcode /= "1001" or (opCode = "1001" and neg = '0'))) or opcode = "0010" or (opcode = "1001" and (neg = '1') and state = "10") else '0';
-      
-      pcChoose <= "01" when opcode = "0010" else 
-                  "10" when opcode = "1001" and neg = '1' and state = "10" else
-                  "00";
-
-      immOut <= "000000" & immInstruction when  opcode /= "1000" 
-                                          and    opcode /= "1001" 
-                                          and    opcode /= "1010" 
-                  else "111111" & immInstruction;
-
-      signedON <= '1' when  opcode = "1000" 
-                      or    opcode = "1001" 
-                      or    opcode = "1010" 
+      pcWren <= '1' when (state = "10" and (opcode /= OPCODE_BLE or (opcode = OPCODE_BLE and neg = '0')))
+                  or opcode = OPCODE_JMP
+                  or (opcode = OPCODE_BLE and (neg = '1') and state = "10")
                   else '0';
+   
+   pcChoose <= "01" when opcode = OPCODE_JMP else 
+               "10" when opcode = OPCODE_BLE and neg = '1' and state = "10" else
+               "00";
 
-      bancoChooseImm <= '1' when opcode = "0001" and state = "01" else '0';
-      bancoWren <= '1' when state = "01" and (opcode = "0100" or opcode = "0001") else '0';
-      bancoChoose <= operand1;
+   immOut <= "000000" & immInstruction when  opcode /= OPCODE_ADDIS 
+                                       and    opcode /= OPCODE_BLE 
+                                       and    opcode /= OPCODE_BCS 
+             else "111111" & immInstruction;
 
-      aluChoose <=   "00" when opcode = "0101" or opcode = "0111" or (opcode = "1001")else
-                     "01" when opcode = "0110" or opcode = "1011" else
-                     "00";  
+   signedON <= '1' when  opcode = OPCODE_ADDIS 
+                       or opcode = OPCODE_BLE 
+                       or opcode = OPCODE_BCS 
+                else '0';
 
-      accChoose <=   "00" when (opcode = "0111" and state = "01") or (opCode = "1001") else --imm
-                     "01" when opcode = "0011" else -- banco
-                     "10";--alu
+   bancoChooseImm <= '1' when opcode = OPCODE_LD and state = "01" else '0';
+   bancoWren <= '1' when state = "01" and (opcode = OPCODE_READA or opcode = OPCODE_LD) else '0';
+   bancoChoose <= operand1;
 
-      accWren <= '1' when (state = "01" and opcode /= "0100" and opcode /= "0010") else '0';
+   aluChoose <=   "00" when opcode = OPCODE_ADD or opcode = OPCODE_ADDI or opcode = OPCODE_BLE else
+                  "01" when opcode = OPCODE_SUB or opcode = OPCODE_CMP else
+                  "00";  
 
-      wrEn_flag <= '1' when state = "01" and opcode = "1011" else '0';
+   accChoose <=   "00" when (opcode = OPCODE_ADDI and state = "01") or (opcode = OPCODE_BLE) else --imm
+                  "01" when opcode = OPCODE_MOVA else -- banco
+                  "10";--alu
 
-      ALUchooseA <= '1' when opcode = "1001" else '0'; -- 0: banco, 1: PC
+   accWren <= '1' when (state = "01" and opcode /= OPCODE_READA and opcode /= OPCODE_JMP) else '0';
+
+   wrEn_flag <= '1' when state = "01" and (opcode = OPCODE_CMP or opcode = OPCODE_ADD or opcode = OPCODE_ADDI or opcode = OPCODE_ADDIS or opcode = OPCODE_SUB) else '0';
+
+   ALUchooseA <= '1' when opcode = OPCODE_BLE else '0'; -- 0: banco, 1: PC
 
 end architecture uc_a;
