@@ -10,5 +10,7 @@ ADDIS reg, Imm          1000 000 0000000000 op/reg/Imm
 BLE delta               1001 XXX 0000000000 op/delta
 BCS delta               1010 XXX 0000000000 op/delta
 CMP reg, A              1011 000 xxxxxxxxxx op/reg
+LW reg1, reg2           1100 000 000xxxxxxx op/reg1/reg2endereçoRAM
+SW reg1, reg2           1101 000 000xxxxxxx op/reg1/reg2endereçoRAM
 
 
