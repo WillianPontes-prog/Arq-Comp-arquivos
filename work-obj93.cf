@@ -1,0 +1,37 @@
+v 4
+file . "./currentProject/XicoXavier.vhd" "273aa7ba1e07794ea5880a260ed5525429f8b1e2" "20250617213023.928":
+  entity xicoxavier at 1( 0) + 0 on 281;
+  architecture xicoxavier_a of xicoxavier at 17( 473) + 0 on 282;
+file . "./componentes/flagRegister.vhd" "0d0006cf4fe9598111c7f102d579ba1f6b74eeba" "20250617213023.496":
+  entity flagregister at 1( 0) + 0 on 277;
+  architecture a_regis16bits of flagregister at 20( 411) + 0 on 278;
+file . "./componentes/somador.vhd" "dc92feb0f0010d0a3f0e645085e85d24041c2854" "20250617213023.468":
+  entity somador at 1( 0) + 0 on 273;
+  architecture somador_a of somador at 12( 216) + 0 on 274;
+file . "./componentes/roma.vhd" "6fee0a1b36a6084bb0b0bd4c0107d7c2c45fbb09" "20250617213023.433":
+  entity roma at 1( 0) + 0 on 269;
+  architecture a_rom of roma at 10( 237) + 0 on 270;
+file . "./componentes/IRado.vhd" "1ddc86e8cf59735d391ff0172d0c50e22ee05271" "20250617213023.403":
+  entity irado at 1( 0) + 0 on 265;
+  architecture a_irado of irado at 15( 300) + 0 on 266;
+file . "./componentes/ALUla.vhd" "5ac65c8195baf004fe3b0ee68dc76d3ff4ddc9d7" "20250617213023.372":
+  entity alula at 1( 0) + 0 on 261;
+  architecture alu_a of alula at 19( 362) + 0 on 262;
+file . "./componentes/BancoRegina.vhd" "05cdf6bfb7028726d5a89bbd3cebf1b07f02f0e4" "20250617213023.389":
+  entity bancoregina at 1( 0) + 0 on 263;
+  architecture bancoreg_a of bancoregina at 21( 418) + 0 on 264;
+file . "./componentes/regis16bits.vhd" "19a4ab9a40991d6cf9b3c405cdff46e28f43672d" "20250617213023.418":
+  entity regis16bits at 1( 0) + 0 on 267;
+  architecture a_regis16bits of regis16bits at 15( 306) + 0 on 268;
+file . "./componentes/ucewa.vhd" "93c88da88543b224107979cc633a5717d5310437" "20250617213023.454":
+  entity ucewa at 1( 0) + 0 on 271;
+  architecture uc_a of ucewa at 42( 1070) + 0 on 272;
+file . "./componentes/stateMachine.vhd" "65adcceb7db73fd315819b8b7064ca99c4065f8d" "20250617213023.481":
+  entity statemachine at 1( 0) + 0 on 275;
+  architecture a_maq_estados of statemachine at 9( 192) + 0 on 276;
+file . "./componentes/RAMus.vhd" "ba2f038b29682d5948135bc1d8c856477fcd4ceb" "20250617213023.510":
+  entity ramus at 1( 0) + 0 on 279;
+  architecture a_ram of ramus at 15( 479) + 0 on 280;
+file . "./currentProject/XicoXavier_tb.vhd" "ea5d0155bc905809c84e086781cb4e56059b3843" "20250617213024.004":
+  entity xicoxavier_tb at 1( 0) + 0 on 283;
+  architecture ateste_tb of xicoxavier_tb at 9( 150) + 0 on 284;

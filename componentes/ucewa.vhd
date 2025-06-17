@@ -34,7 +34,7 @@ entity ucewa is
          ALUchooseA: out std_logic; -- 0: banco, 1: PC
 
          ramWRen: out std_logic; 
-         addressAccWren: out std_logic
+         addressRamWren: out std_logic
 
    );
 end entity ucewa;
@@ -54,8 +54,8 @@ architecture uc_a of ucewa is
    constant OPCODE_BLE    : unsigned(3 downto 0) := "1001";
    constant OPCODE_BCS    : unsigned(3 downto 0) := "1010";
    constant OPCODE_CMP    : unsigned(3 downto 0) := "1011";
-   constant OPCODE_LW    : unsigned(3 downto 0) := "1100";
-   constant OPCODE_SW    : unsigned(3 downto 0) := "1101";
+   constant OPCODE_LW    : unsigned(3 downto 0)  := "1100";
+   constant OPCODE_SW    : unsigned(3 downto 0)  := "1101";
 
    signal opCode: unsigned(3 downto 0);
    signal operand1: unsigned(2 downto 0);
@@ -90,7 +90,10 @@ architecture uc_a of ucewa is
                        or opcode = OPCODE_BCS 
                 else '0';
 
-   bancoChooseSrc <= "01" when opcode = OPCODE_LD and state = "01" else "00";
+   bancoChooseSrc <= "01" when opcode = OPCODE_LD and state = "01" else 
+                     "10" when opcode = OPCODE_LW and state = "10"
+                        else "00";
+
    bancoWren <= '1' when (state = "01" and (opcode = OPCODE_READA or opcode = OPCODE_LD)) or (state = "10" and opcode = OPCODE_LW) else '0';
    bancoChoose <= operand2 when ((opcode = OPCODE_LW or opcode = OPCODE_SW) and state = "01") else operand1;
 
@@ -108,7 +111,7 @@ architecture uc_a of ucewa is
 
    ALUchooseA <= '1' when opcode = OPCODE_BLE else '0'; -- 0: banco, 1: PC
 
-   addressAccWren <= '1' when state = "01" and (opcode = OPCODE_LW or opcode = OPCODE_SW)else '0';
+   addressRamWren <= '1' when state = "01" and (opcode = OPCODE_LW or opcode = OPCODE_SW)else '0';
 
    ramWRen <= '1' when state = "10" and opcode = OPCODE_SW else '0';
 

@@ -18,34 +18,37 @@ architecture XicoXavier_a of XicoXavier is
 
     component ucewa
         port(
-        instruction: in unsigned(16 downto 0);
-        state: in unsigned(1 downto 0);
+            instruction: in unsigned(16 downto 0);
+            state: in unsigned(1 downto 0);
 
-        pcWren: out std_logic;
-        pcChoose: out unsigned(1 downto 0); -- 0: +1, 1: Imm, 2:ALU
+            pcWren: out std_logic;
+            pcChoose: out unsigned(1 downto 0); -- 0: +1, 1: Imm, 2:ALU
 
-        bancoChooseImm: out std_logic;
-        bancoWren: out std_logic;
-        bancoChoose: out unsigned(2 downto 0);
+            bancoChooseSrc: out unsigned(1 downto 0); -- 0: Acc, 1: Imm, 2: RAM
+            bancoWren: out std_logic;
+            bancoChoose: out unsigned(2 downto 0);
 
-         aluChoose: out unsigned(1 downto 0); -- 1: ADD 2: SUB, 3: AND, 4: OR
+            aluChoose: out unsigned(1 downto 0); -- 1: ADD 2: SUB, 3: AND, 4: OR
 
-         accChoose: out unsigned(1 downto 0); -- 0: Imm, 1: Banco, 2: ALU
-         accWren: out std_logic;
+            accChoose: out unsigned(1 downto 0); -- 0: Imm, 1: Banco, 2: ALU
+            accWren: out std_logic;
 
-         iRegisterWren: out std_logic;
+            iRegisterWren: out std_logic;
 
-         immOut: out unsigned(15 downto 0);
+            immOut: out unsigned(15 downto 0);
 
-         signedON: out std_logic;
+            signedON: out std_logic;
 
-         wrEn_flag: out std_logic;
+            wrEn_flag: out std_logic;
 
-         zero: in std_logic;
-         neg: in std_logic;
-         carry: in std_logic;
+            zero: in std_logic;
+            neg: in std_logic;
+            carry: in std_logic;
 
-         ALUchooseA: out std_logic -- 0: banco, 1: PC
+            ALUchooseA: out std_logic; -- 0: banco, 1: PC
+
+            ramWRen: out std_logic; 
+            addressRamWren: out std_logic
         );
     end component;
 
@@ -132,6 +135,16 @@ architecture XicoXavier_a of XicoXavier is
         );
     end component;
 
+    component RAMus
+        port (
+            clk      : in std_logic;
+            endereco : in unsigned(6 downto 0);
+            wr_en    : in std_logic;
+            dado_in  : in unsigned(15 downto 0);
+            dado_out : out unsigned(15 downto 0) 
+        );
+    end component;
+
     signal pcIn, pcOut: unsigned(15 downto 0);
     signal somadorOut: unsigned(15 downto 0);
 
@@ -154,21 +167,35 @@ architecture XicoXavier_a of XicoXavier is
 
     signal bancoRegChoose: unsigned(2 downto 0);  
     signal choosePc: unsigned(1 downto 0); -- 0: +1, 1: Imm, 2:ALU
-    signal bancoChooseImm: std_logic;
+    signal bancoChooseSrc: unsigned (1 downto 0); -- 0: Acc, 1: Imm, 2: RAM
 
     signal accChoose: unsigned(1 downto 0);
     signal accWren: std_logic;
     signal immOut: unsigned(15 downto 0);
 
     signal accIn: unsigned(15 downto 0);
-    signal endereco: unsigned(6 downto 0);
+    signal enderecoROM: unsigned(6 downto 0);
 
     signal ALUchooseA: std_logic; -- 0: banco, 1: PC
     signal AluA: unsigned(15 downto 0);
 
     signal signedON: std_logic; -- Used to determine if the ALU should treat numbers as signed or unsigned
 
+    signal ramWRen: std_logic;
+    signal addressRamWren: std_logic; -- Used to determine if the address for the accumulator should be written
+    signal enderecoRAM: unsigned(15 downto 0); -- Address for the RAM
+    signal RAMin: unsigned(15 downto 0); -- Input data for the RAM
+    signal RAMout: unsigned(15 downto 0); -- Output data from the RAM
+
 begin
+
+    adreessRam: regis16bits port map (
+        clk      => clk,
+        rst      => reset,
+        wr_en    => addressRamWren,  
+        data_in  => bancoRegDataOut, 
+        data_out => enderecoRAM  
+    );
 
     pc: regis16bits port map (
         clk      => clk,
@@ -185,7 +212,7 @@ begin
 
     rom: roma port map (
         clk => clk,
-        endereco => endereco,  
+        endereco => enderecoROM,  
         dado => irIn  
     );
 
@@ -230,7 +257,7 @@ begin
         pcWren => pcWren,
         pcChoose => choosePc,
 
-        bancoChooseImm => bancoChooseImm,
+        bancoChooseSrc => bancoChooseSrc,
         bancoWren   => bancoWren,
         bancoChoose => bancoRegChoose,
 
@@ -247,7 +274,10 @@ begin
         zero => flagZOut,
         neg => flagNOut,
         carry => flagCOut,
-        ALUchooseA => ALUchooseA
+        ALUchooseA => ALUchooseA,
+
+        ramWRen => ramWRen,
+        addressRamWren => addressRamWren
 
     );
 
@@ -273,16 +303,29 @@ begin
         carryOut => flagCOut  
     );
 
+    ram: RAMus port map (
+        clk => clk,
+        endereco => enderecoRAM(6 downto 0),  
+        wr_en => ramWRen,  
+        dado_in => RAMin,  
+        dado_out => RAMout  
+    );
+
+    RAMin <= BancoRegDataOut;
+
     pcIn <=     immOut when choosePc = "01" else
                 ALUOut when choosePc = "10" else
                 somadorOut;
 
-    bancoRegDataIn <= immOut when bancoChooseImm = '1' else accumulatorDataOut;
+    bancoRegDataIn <=   immOut  when bancoChooseSrc = "01" else 
+                        RAMout  when bancoChooseSrc = "10" else
+                                accumulatorDataOut;
 
     accIn <= immOut when accChoose = "00" else
              bancoRegDataOut when accChoose = "01" else
              ALUOut;
-    endereco <=  pcOut(6 downto 0);
+
+    enderecoROM <=  pcOut(6 downto 0);
 
     estado <= currentState;
     ulaOut <= ALUOut;
@@ -291,4 +334,5 @@ begin
     instructionOut <= irOut;
 
     AluA <= pcOut when ALUchooseA = '1' else bancoRegDataOut;
+
 end architecture XicoXavier_a;
