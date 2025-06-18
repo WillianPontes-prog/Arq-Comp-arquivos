@@ -6,7 +6,6 @@ READA regd        	    0100 000 XXXXXXXXXX op/regd
 ADD reg, A        	    0101 000 XXXXXXXXXX op/reg
 SUB reg, A        	    0110 000 XXXXXXXXXX op/reg
 ADDI reg, Imm        	0111 000 0000000000 op/reg/Imm
-ADDIS reg, Imm          1000 000 0000000000 op/reg/Imm
 BLE delta               1001 XXX 0000000000 op/delta
 BCS delta               1010 XXX 0000000000 op/delta
 CMP reg, A              1011 000 xxxxxxxxxx op/reg
