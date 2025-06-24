@@ -78,9 +78,8 @@ architecture uc_a of ucewa is
                "10" when (opcode = OPCODE_BLE and (neg = '1' or zero = '1') and state = "10") or (opcode = OPCODE_BCS and carry = '1') else
                "00";
 
-   immOut <= "000000" & immInstruction when   opcode /= OPCODE_BLE 
-                                       and    opcode /= OPCODE_BCS 
-             else "111111" & immInstruction;
+   immOut <= "111111" & immInstruction when   (opcode = OPCODE_BLE or    opcode = OPCODE_BCS ) and immInstruction(9) = '1'
+             else "000000" & immInstruction;
 
    signedON <= '1' when   opcode = OPCODE_BLE 
                        or opcode = OPCODE_BCS 
@@ -94,12 +93,12 @@ architecture uc_a of ucewa is
    
    bancoChoose <= operand2 when ((opcode = OPCODE_LW or opcode = OPCODE_SW or opcode = OPCODE_MOV) and state = "01") else operand1;
 
-   aluChoose <=   "00" when opcode = OPCODE_ADD or opcode = OPCODE_ADDI or opcode = OPCODE_BLE else
+   aluChoose <=   "00" when opcode = OPCODE_ADD or opcode = OPCODE_ADDI or opcode = OPCODE_BLE or opcode = OPCODE_BCS else
                   "01" when opcode = OPCODE_SUB or opcode = OPCODE_CMP else
                   "11" when opcode = OPCODE_ORI else
                   "00";  
 
-   accChoose <=   "00" when ((opcode = OPCODE_ADDI or opcode = OPCODE_ORI)and state = "01") or (opcode = OPCODE_BLE) else --imm
+   accChoose <=   "00" when ((opcode = OPCODE_ADDI or opcode = OPCODE_ORI)and state = "01") or (opcode = OPCODE_BLE or opCode = OPCODE_BCS) else --imm
                   "01" when opcode = OPCODE_MOVA or opcode = OPCODE_MOV else -- banco
                   "10";--alu
 
@@ -107,7 +106,7 @@ architecture uc_a of ucewa is
 
    wrEn_flag <= '1' when state = "01" and (opcode = OPCODE_CMP or opcode = OPCODE_ADD or opcode = OPCODE_ADDI or opcode = OPCODE_ORI or opcode = OPCODE_SUB) else '0';
 
-   ALUchooseA <= '1' when opcode = OPCODE_BLE else '0'; -- 0: banco, 1: PC
+   ALUchooseA <= '1' when opcode = OPCODE_BLE or opcode = OPCODE_BCS else '0'; -- 0: banco, 1: PC
 
    addressRamWren <= '1' when state = "01" and (opcode = OPCODE_LW or opcode = OPCODE_SW)else '0';
 

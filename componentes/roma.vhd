@@ -8,16 +8,71 @@ entity roma is
    );
 end entity;
 architecture a_rom of roma is
+
+      -- Aliases para os opcodes
+   constant OPCODE_NOP    : unsigned(3 downto 0) := "0000";
+   constant OPCODE_LD     : unsigned(3 downto 0) := "0001";
+   constant OPCODE_JMP    : unsigned(3 downto 0) := "0010";
+   constant OPCODE_MOVA   : unsigned(3 downto 0) := "0011";
+   constant OPCODE_READA  : unsigned(3 downto 0) := "0100";
+   constant OPCODE_ADD    : unsigned(3 downto 0) := "0101";
+   constant OPCODE_SUB    : unsigned(3 downto 0) := "0110";
+   constant OPCODE_ADDI   : unsigned(3 downto 0) := "0111";
+   constant OPCODE_BLE    : unsigned(3 downto 0) := "1001";
+   constant OPCODE_BCS    : unsigned(3 downto 0) := "1010";
+   constant OPCODE_CMP    : unsigned(3 downto 0) := "1011";
+   constant OPCODE_LW    : unsigned(3 downto 0)  := "1100";
+   constant OPCODE_SW    : unsigned(3 downto 0)  := "1101";
+   constant OPCODE_ORI    : unsigned(3 downto 0) := "1110";
+   constant OPCODE_MOV    : unsigned(3 downto 0) := "1111";
+
+   constant NOP : unsigned(16 downto 0) := "00000000000000000"; -- NOP
+
+   constant regPontRam : unsigned(2 downto 0) := "000"; -- R0
+   constant regComp   : unsigned(2 downto 0) := "001"; -- R1
+   constant regCompRaizPraBaixo : unsigned(2 downto 0) := "010"; -- R2
+   constant regTrue  : unsigned(2 downto 0) := "011"; -- R3
+   constant regFalse : unsigned(2 downto 0) := "100"; -- R4
+   constant regPrimo : unsigned(2 downto 0) := "101"; -- R5
+
    type mem is array (0 to 127) of unsigned(16 downto 0);
    constant conteudo_rom : mem := (
-      -- caso endereco => conteudo
-     -- caso endereco => conteudo
-      0  => "00010110000000101", --LD R3 5 
-      1  => "00011000000000000", --LD R4 0 
-      2  => "11111000110000000", --MOV R4 R3 
-      -- abaixo: casos omissos => (zero em todos os bits)
-      others => (others=>'0')
+      0  => OPCODE_LD & regPontRam & "0000000010",         
+      1  => OPCODE_LD & regComp & "0000100000",            
+      2  => OPCODE_LD & regCompRaizPraBaixo & "0000000110",
+      3  => OPCODE_LD & regTrue & "0000000001",            
+      4  => OPCODE_LD & regFalse & "0000000000",   
 
+      5  => OPCODE_SW & regFalse & regFalse & "0000000",
+      6  => OPCODE_SW & regFalse & regTrue & "0000000",
+
+      7  => OPCODE_SW & regTrue & regPontRam & "0000000",
+      8  => OPCODE_ADDI & regPontRam & "0000000001",
+      9  => OPCODE_READA & regPontRam & "0000000000",
+      10 => OPCODE_MOVA & regComp & "0000000000",
+      11 => OPCODE_CMP & regPontRam & "0000000000",
+      12 => OPCODE_BLE & "111" & "1111111011",
+
+      13 => OPCODE_LD & regPrimo & "0000000010",
+
+      14 => OPCODE_MOV & regPontRam & regPrimo & "0000000", --praca
+
+      15 => OPCODE_MOVA & regPrimo & "0000000000",
+      16 => OPCODE_ADD & regPontRam & "0000000000",
+      17 => OPCODE_READA & regPontRam & "0000000000",
+      18 => OPCODE_SW & regFalse & regPontRam & "0000000",
+      19 => OPCODE_ORI & regPontRam & "0000011111",
+      20 => OPCODE_CMP & regComp & "0000000000",
+      21 => OPCODE_BCS & "000" & "0000000010",
+      22 => OPCODE_JMP & "000" & "0000001111",
+      23 => OPCODE_ADDI & regPrimo & "0000000001",
+      24 => OPCODE_READA & regPrimo & "0000000000",
+      25 => OPCODE_MOVA & regPrimo & "0000000000",
+      26 => OPCODE_CMP & regCompRaizPraBaixo & "0000000000", --COMPARA COM QUEM?
+      27 => OPCODE_BCS & "000" & "0000000010", 
+      28 => OPCODE_JMP & "000" & "0000001110", --praca
+      29 => NOP,
+      others => NOP 
    );
 begin
    process(clk)
