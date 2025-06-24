@@ -12,4 +12,5 @@ CMP reg, A              1011 000 xxxxxxxxxx op/reg
 LW reg1, reg2           1100 000 000xxxxxxx op/reg1/reg2endereçoRAM
 SW reg1, reg2           1101 000 000xxxxxxx op/reg1/reg2endereçoRAM
 ORI reg, imm            1110 000 0000000000 op/reg/Tmm
+MOV regD, regS          1111 000 000xxxxxxx op/reg1/reg2
 

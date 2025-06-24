@@ -13,8 +13,8 @@ architecture a_rom of roma is
       -- caso endereco => conteudo
      -- caso endereco => conteudo
       0  => "00010110000000101", --LD R3 5 
-      1  => "11100110000010110", --ORI R3 22 
-      2  => "01000010000000000", --RDA R1 
+      1  => "00011000000000000", --LD R4 0 
+      2  => "11111000110000000", --MOV R4 R3 
       -- abaixo: casos omissos => (zero em todos os bits)
       others => (others=>'0')
 

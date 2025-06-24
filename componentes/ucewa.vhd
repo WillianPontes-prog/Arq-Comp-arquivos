@@ -56,6 +56,7 @@ architecture uc_a of ucewa is
    constant OPCODE_LW    : unsigned(3 downto 0)  := "1100";
    constant OPCODE_SW    : unsigned(3 downto 0)  := "1101";
    constant OPCODE_ORI    : unsigned(3 downto 0) := "1110";
+   constant OPCODE_MOV    : unsigned(3 downto 0) := "1111";
 
    signal opCode: unsigned(3 downto 0);
    signal operand1: unsigned(2 downto 0);
@@ -89,9 +90,9 @@ architecture uc_a of ucewa is
                      "10" when opcode = OPCODE_LW and state = "10"
                         else "00";
 
-   bancoWren <= '1' when (state = "01" and (opcode = OPCODE_READA or opcode = OPCODE_LD)) or (state = "10" and opcode = OPCODE_LW) else '0';
+   bancoWren <= '1' when (state = "01" and (opcode = OPCODE_READA or opcode = OPCODE_LD)) or (state = "10" and (opcode = OPCODE_LW or opcode = OPCODE_MOV)) else '0';
    
-   bancoChoose <= operand2 when ((opcode = OPCODE_LW or opcode = OPCODE_SW) and state = "01") else operand1;
+   bancoChoose <= operand2 when ((opcode = OPCODE_LW or opcode = OPCODE_SW or opcode = OPCODE_MOV) and state = "01") else operand1;
 
    aluChoose <=   "00" when opcode = OPCODE_ADD or opcode = OPCODE_ADDI or opcode = OPCODE_BLE else
                   "01" when opcode = OPCODE_SUB or opcode = OPCODE_CMP else
@@ -99,10 +100,10 @@ architecture uc_a of ucewa is
                   "00";  
 
    accChoose <=   "00" when ((opcode = OPCODE_ADDI or opcode = OPCODE_ORI)and state = "01") or (opcode = OPCODE_BLE) else --imm
-                  "01" when opcode = OPCODE_MOVA else -- banco
+                  "01" when opcode = OPCODE_MOVA or opcode = OPCODE_MOV else -- banco
                   "10";--alu
 
-   accWren <= '1' when (state = "01" and opcode /= OPCODE_READA and opcode /= OPCODE_JMP) or (state = "10" and (opcode = OPCODE_ADDI or opcode = OPCODE_ORI)) else '0';
+   accWren <= '1' when (state = "01" and opcode /= OPCODE_READA and opcode /= OPCODE_JMP) or (state = "10" and (opcode = OPCODE_ADDI or opcode = OPCODE_ORI)) or (opcode = OPCODE_MOV and state = "01") else '0';
 
    wrEn_flag <= '1' when state = "01" and (opcode = OPCODE_CMP or opcode = OPCODE_ADD or opcode = OPCODE_ADDI or opcode = OPCODE_ORI or opcode = OPCODE_SUB) else '0';
 
