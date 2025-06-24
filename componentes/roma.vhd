@@ -12,23 +12,9 @@ architecture a_rom of roma is
    constant conteudo_rom : mem := (
       -- caso endereco => conteudo
      -- caso endereco => conteudo
-      0  => "00010110000000101", --LD R3 5 -- valor pra gravar
-      1  => "00010100000000000", --LD R2 0 -- reg pra regravar
-      2  => "00010010000000110", --LD R1 6 -- valor do endereço
-      3  => "11010110010000000", --SW R3 R1 -- carrega o valor de R3 no endereço 6
-      4  => "11000100010000000", --LW R2 R1 -- carrega o valor do endereço 6 em R3
-      5  => "01110010000000001", --ADDI R1 1 
-      6  => "01000010000000000", --READA R1 
-      7  => "01110110000000001", --ADDI R3 1
-      8  => "01000110000000000", --READA R3
-      9  => "00010000000001010", --LD R0 10 
-      10 => "00110000000000000", --MVA R0
-      11 => "10110100000000000", --CMP R2
-      12 => "10010001111110111", --BLE -9
-      13 => "00000000000000000", 
-      14 => "00000000000000000", 
-      15 => "00000000000000000",
-      16 => "00000000000000000",
+      0  => "00010110000000101", --LD R3 5 
+      1  => "11100110000010110", --ORI R3 22 
+      2  => "01000010000000000", --RDA R1 
       -- abaixo: casos omissos => (zero em todos os bits)
       others => (others=>'0')
 

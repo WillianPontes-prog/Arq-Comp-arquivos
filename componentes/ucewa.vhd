@@ -55,6 +55,7 @@ architecture uc_a of ucewa is
    constant OPCODE_CMP    : unsigned(3 downto 0) := "1011";
    constant OPCODE_LW    : unsigned(3 downto 0)  := "1100";
    constant OPCODE_SW    : unsigned(3 downto 0)  := "1101";
+   constant OPCODE_ORI    : unsigned(3 downto 0) := "1110";
 
    signal opCode: unsigned(3 downto 0);
    signal operand1: unsigned(2 downto 0);
@@ -73,7 +74,7 @@ architecture uc_a of ucewa is
       pcWren <= '1' when state = "10" else '0';
    
    pcChoose <= "01" when opcode = OPCODE_JMP else 
-               "10" when (opcode = OPCODE_BLE and (neg = '1' or zero = '1') and state = "10") or (opcode = OPCODE_BCS and carry = '1')else
+               "10" when (opcode = OPCODE_BLE and (neg = '1' or zero = '1') and state = "10") or (opcode = OPCODE_BCS and carry = '1') else
                "00";
 
    immOut <= "000000" & immInstruction when   opcode /= OPCODE_BLE 
@@ -89,19 +90,21 @@ architecture uc_a of ucewa is
                         else "00";
 
    bancoWren <= '1' when (state = "01" and (opcode = OPCODE_READA or opcode = OPCODE_LD)) or (state = "10" and opcode = OPCODE_LW) else '0';
+   
    bancoChoose <= operand2 when ((opcode = OPCODE_LW or opcode = OPCODE_SW) and state = "01") else operand1;
 
    aluChoose <=   "00" when opcode = OPCODE_ADD or opcode = OPCODE_ADDI or opcode = OPCODE_BLE else
                   "01" when opcode = OPCODE_SUB or opcode = OPCODE_CMP else
+                  "11" when opcode = OPCODE_ORI else
                   "00";  
 
-   accChoose <=   "00" when (opcode = OPCODE_ADDI and state = "01") or (opcode = OPCODE_BLE) else --imm
+   accChoose <=   "00" when ((opcode = OPCODE_ADDI or opcode = OPCODE_ORI)and state = "01") or (opcode = OPCODE_BLE) else --imm
                   "01" when opcode = OPCODE_MOVA else -- banco
                   "10";--alu
 
-   accWren <= '1' when (state = "01" and opcode /= OPCODE_READA and opcode /= OPCODE_JMP) or (state = "10" and opcode = OPCODE_ADDI) else '0';
+   accWren <= '1' when (state = "01" and opcode /= OPCODE_READA and opcode /= OPCODE_JMP) or (state = "10" and (opcode = OPCODE_ADDI or opcode = OPCODE_ORI)) else '0';
 
-   wrEn_flag <= '1' when state = "01" and (opcode = OPCODE_CMP or opcode = OPCODE_ADD or opcode = OPCODE_ADDI or opcode = OPCODE_SUB) else '0';
+   wrEn_flag <= '1' when state = "01" and (opcode = OPCODE_CMP or opcode = OPCODE_ADD or opcode = OPCODE_ADDI or opcode = OPCODE_ORI or opcode = OPCODE_SUB) else '0';
 
    ALUchooseA <= '1' when opcode = OPCODE_BLE else '0'; -- 0: banco, 1: PC
 
