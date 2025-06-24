@@ -70,13 +70,10 @@ architecture uc_a of ucewa is
 
       iRegisterWren <= '1' when state = "00" else '0';
 
-      pcWren <= '1' when (state = "10" and (opcode /= OPCODE_BLE or (opcode = OPCODE_BLE and (neg = '0' or zero = '1'))))
-                  or opcode = OPCODE_JMP
-                  or (opcode = OPCODE_BLE and (neg = '1' and zero = '0') and state = "10")
-                  else '0';
+      pcWren <= '1' when state = "10" else '0';
    
    pcChoose <= "01" when opcode = OPCODE_JMP else 
-               "10" when opcode = OPCODE_BLE and neg = '1' and state = "10" else
+               "10" when (opcode = OPCODE_BLE and (neg = '1' or zero = '1') and state = "10") or (opcode = OPCODE_BCS and carry = '1')else
                "00";
 
    immOut <= "000000" & immInstruction when   opcode /= OPCODE_BLE 
