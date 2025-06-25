@@ -15,6 +15,7 @@ architecture ateste_tb of XicoXavier_tb is
         instructionOut : out unsigned(16 downto 0);
         BancoRegData : out unsigned(15 downto 0);
         ulaOut    : out unsigned(15 downto 0);  
+        primo       : out unsigned(15 downto 0);
         pc_out         : out unsigned(15 downto 0)
     );       -- aqui vai seu componente a testar
     end component;
@@ -28,6 +29,7 @@ architecture ateste_tb of XicoXavier_tb is
     signal  BancoRegData : unsigned(15 downto 0);
     signal  ulaOut    : unsigned(15 downto 0);
     signal  pc_out         : unsigned(15 downto 0);
+    signal  primo       : unsigned(15 downto 0);
 
 begin
     uut: XicoXavier port map (
@@ -37,6 +39,7 @@ begin
         instructionOut => instructionOut,
         BancoRegData => BancoRegData,
         ulaOut      => ulaOut,
+        primo       => primo,
         pc_out          => pc_out
     );  -- aqui vai a instância do seu componente
     
@@ -50,7 +53,7 @@ begin
     
     sim_time_proc: process
     begin
-        wait for 250 us;         -- <== TEMPO TOTAL DA SIMULAÇÃO!!!
+        wait for 330 us;         -- <== TEMPO TOTAL DA SIMULAÇÃO!!!
         finished <= '1';
         wait;
     end process sim_time_proc;

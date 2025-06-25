@@ -12,6 +12,8 @@ entity BancoRegina is
         data_out    : out unsigned(15 downto 0);
         reg_choose  : in unsigned(2 downto 0);
 
+        saidaPrimo   : out unsigned(15 downto 0);
+
         rst         : in std_logic
     );
 end entity BancoRegina;
@@ -96,6 +98,8 @@ begin
                     data_out3 when reg_choose = "011" else
                     data_out4 when reg_choose = "100" else
                     data_out5 when reg_choose = "101";
+
+        saidaPrimo <= data_out2;
 
 
 end architecture BancoReg_a;

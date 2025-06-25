@@ -46,7 +46,7 @@ architecture a_rom of roma is
       5  => OPCODE_SW & regFalse & regFalse & "0000000",
       6  => OPCODE_SW & regFalse & regTrue & "0000000",
 
-      7  => OPCODE_SW & regTrue & regPontRam & "0000000",
+      7  => OPCODE_SW & regPontRam & regPontRam & "0000000",
       8  => OPCODE_ADDI & regPontRam & "0000000001",
       9  => OPCODE_READA & regPontRam & "0000000000",
       10 => OPCODE_MOVA & regComp & "0000000000",
@@ -61,17 +61,27 @@ architecture a_rom of roma is
       16 => OPCODE_ADD & regPontRam & "0000000000",
       17 => OPCODE_READA & regPontRam & "0000000000",
       18 => OPCODE_SW & regFalse & regPontRam & "0000000",
-      19 => OPCODE_ORI & regPontRam & "0000011111",
+      19 => OPCODE_ORI & regPontRam & "0000011111", --para validação ORI para saida do loop
       20 => OPCODE_CMP & regComp & "0000000000",
       21 => OPCODE_BCS & "000" & "0000000010",
       22 => OPCODE_JMP & "000" & "0000001111",
       23 => OPCODE_ADDI & regPrimo & "0000000001",
       24 => OPCODE_READA & regPrimo & "0000000000",
       25 => OPCODE_MOVA & regPrimo & "0000000000",
-      26 => OPCODE_CMP & regCompRaizPraBaixo & "0000000000", --COMPARA COM QUEM?
+      26 => OPCODE_CMP & regCompRaizPraBaixo & "0000000000",
       27 => OPCODE_BCS & "000" & "0000000010", 
       28 => OPCODE_JMP & "000" & "0000001110", --praca
       29 => NOP,
+
+      30 => OPCODE_LD & regPontRam & "0000000010",
+      31 => OPCODE_LD & regComp & "0000100000",
+
+      32 => OPCODE_LW & regCompRaizPraBaixo & regPontRam & "0000000",
+      33 => OPCODE_ADDI & regPontRam & "0000000001",
+      34 => OPCODE_READA & regPontRam & "0000000000",
+      35 => OPCODE_MOVA & regComp & "0000000000",
+      36 => OPCODE_CMP & regPontRam & "0000000000",
+      37 => OPCODE_BLE & "111" & "1111111011",
       others => NOP 
    );
 begin

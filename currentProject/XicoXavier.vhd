@@ -10,6 +10,7 @@ entity XicoXavier is
         instructionOut : out unsigned(16 downto 0);
         BancoRegData : out unsigned(15 downto 0);
         ulaOut    : out unsigned(15 downto 0);  
+        primo       : out unsigned(15 downto 0);
         pc_out         : out unsigned(15 downto 0)
     );  
 end entity XicoXavier;
@@ -115,6 +116,8 @@ architecture XicoXavier_a of XicoXavier is
         data_in     : in unsigned(15 downto 0);
         data_out    : out unsigned(15 downto 0);
         reg_choose  : in unsigned(2 downto 0);
+
+        saidaPrimo   : out unsigned(15 downto 0);
 
         rst         : in std_logic
         );
@@ -247,6 +250,7 @@ begin
         data_in => bancoRegDataIn,  
         data_out => bancoRegDataOut,  
         reg_choose => bancoRegChoose,  
+        saidaPrimo => primo,
         rst => reset
     );
 
